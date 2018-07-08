@@ -217,6 +217,7 @@ import sys
 import traceback
 import logging
 import os
+import json
 from os.path import exists, abspath, join, basename, splitext, normpath, dirname
 from glob import glob
 from fnmatch import fnmatch
@@ -1023,6 +1024,13 @@ avoid location preprocessing of other functions sharing name with a VUnit log or
         return SourceFileList([SourceFile(source_file, self._project, self)
                                for source_file in source_files])
 
+    def export_json(self,source_files, outfile):
+        files = self.get_implementation_subset(source_files)
+        data = {'header' : None 'files': [], 'libraries': []}
+        for entry in files:
+            print(entry.name)
+            print(entry.vhdl_standard)
+            print(entry.library.name)
 
 class Library(object):
     """
