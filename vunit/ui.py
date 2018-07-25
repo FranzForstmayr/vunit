@@ -1023,6 +1023,30 @@ avoid location preprocessing of other functions sharing name with a VUnit log or
         return SourceFileList([SourceFile(source_file, self._project, self)
                                for source_file in source_files])
 
+    def export_json(self, source_files, outfile, name):
+        """
+        Write me
+
+        """
+        jsondict = {'name' : name,
+                    'vhdl_standard' : self.vhdl_standard}
+
+        impl_subset = self.get_implementation_subset(source_files)
+        libraries = set([f.library.name for f in impl_subset])
+        jsondict.update({'libraries' : {name : []} for name in libraries})
+
+        print(jsondict)
+
+        for f in impl_subset:
+            filedict = {'name' : f.name}
+            #filedict.update({'compile_options' : f.compile_options() } if f.compile_options() is not None else None)
+            filedict.update({'vhdl_standard': f.vhdl_standard } if f.vhdl_standard is not self.vhdl_standard else {})
+            jsondict['libraries'][f.library.name].append(filedict)
+
+        print(filedict)
+       
+            
+
 
 class Library(object):
     """
